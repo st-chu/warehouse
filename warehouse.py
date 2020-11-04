@@ -8,9 +8,15 @@ items = [
          ]
 
 
+def get_items(items):
+    header = items[0].keys()
+    row = [item.values() for item in items]
+    print(tabulate.tabulate(row, header, tablefmt='github'))
+
+
 def menu():
     print('MENU'.center(80, '_'))
-    print('|{:<78}|'.format('exit'))
+    print('|{:<78}|'.format(' exit | show'))
     print(''.center(80, '-'))
 
 
@@ -21,3 +27,5 @@ if __name__ == '__main__':
         if operation_name.lower() == 'exit':
             print('see you later alligator...')
             break
+        elif operation_name.lower() == 'show':
+            get_items(items)
