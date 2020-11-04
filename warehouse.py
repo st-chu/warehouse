@@ -16,8 +16,16 @@ def get_items(items):
 
 def menu():
     print('MENU'.center(80, '_'))
-    print('|{:<78}|'.format(' exit | show'))
+    print('|{:<78}|'.format(' exit | show | add |'))
     print(''.center(80, '-'))
+
+
+def add_item(items_list):
+    name = input('Item name: ')
+    quantity = float(input('Item quantity: '))
+    unit = input('Item unit of measure (kg, l, pkg., btl.): ')
+    unit_price = float(input('Item price in PLN: '))
+    return items_list.append({'name': name, 'quantity': quantity, 'unit': unit, 'unit_price': unit_price})
 
 
 if __name__ == '__main__':
@@ -28,4 +36,7 @@ if __name__ == '__main__':
             print('see you later alligator...')
             break
         elif operation_name.lower() == 'show':
+            get_items(items)
+        elif operation_name.lower() == 'add':
+            add_item(items)
             get_items(items)
