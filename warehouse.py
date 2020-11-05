@@ -2,10 +2,11 @@ import tabulate
 
 
 items = [
-    {'name': 'coffee', 'quantity': 10, 'unit': 'pkg.', 'unit_price': 65.99},
-    {'name': 'soy sauce', 'quantity': 7, 'unit': 'btl.', 'unit_price': 14.45},
-    {'name': 'sugar', 'quantity': 50, 'unit': 'kg', 'unit_price': 9.5}
+    {'name': 'coffee', 'quantity': 10, 'unit': 'pkg.', 'unit_price (PLN)': 65.99},
+    {'name': 'soy sauce', 'quantity': 7, 'unit': 'btl.', 'unit_price (PLN)': 14.45},
+    {'name': 'sugar', 'quantity': 50, 'unit': 'kg', 'unit_price (PLN)': 9.5}
          ]
+sold_items = []
 
 
 def get_items(items):
@@ -20,21 +21,32 @@ def menu():
     print(''.center(80, '-'))
 
 
+def is_in_list(item_list, name, unit, unit_price):
+    for item in item_list:
+        if item['name'] == name and item['unit'] == unit and item['unit_price (PLN)'] == unit_price:
+            return True
+
+
 def add_item(items_list):
     name = input('Item name: ')
     quantity = float(input('Item quantity: '))
     unit = input('Item unit of measure (kg, l, pkg., btl.): ')
     unit_price = float(input('Item price in PLN: '))
-    return items_list.append({'name': name, 'quantity': quantity, 'unit': unit, 'unit_price': unit_price})
+    if is_in_list(items_list, name, unit, unit_price) is True:
+        for item in items_list:
+            if item['name'] == name:
+                item['quantity'] += quantity
+    else:
+        items_list.append({'name': name, 'quantity': quantity, 'unit': unit, 'unit_price (PLN)': unit_price})
+    return items_list
 
 
-def sel_item(item_list):
+def sell_item(item_list, sold_items_list):
     name = input('Item name: ')
     quantity = float(input('Quantity to sell: '))
     for item in item_list:
         if item['name'] == name:
             item['quantity'] -= quantity
-    return item_list
 
 
 if __name__ == '__main__':
@@ -50,5 +62,6 @@ if __name__ == '__main__':
             add_item(items)
             get_items(items)
         elif operation_name.lower() == 'sell':
-            items = sel_item(items)
+            sell_item(items, sold_items)
             get_items(items)
+
