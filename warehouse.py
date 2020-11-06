@@ -9,7 +9,16 @@ items = [
 sold_items = []
 
 
+def sort_key(element):
+    return element['name']
+
+
+def sorted_items_list(items_list):
+    return sorted(items_list, key=sort_key)
+
+
 def get_items(_items):
+    _items = sorted_items_list(_items)
     header = 'name', 'quantity', 'unit', 'unit_price (PLN)'
     row = [item.values() for item in _items]
     print(tabulate.tabulate(row, header, tablefmt='github'))
@@ -62,27 +71,44 @@ def get_cost(items_list):
     return sum(total_cost_list)
 
 
+def show_revenue(items_list, sold_items_list):
+    print()
+    print('-'*20)
+    cost = get_cost(items_list)
+    income = get_cost(sold_items_list)
+    print('Income: {}zł'.format(income))
+    print('Costs: {}zł'.format(cost))
+    print('-'*20)
+    print('Revenue: {}zł'.format(income-cost))
+    print('-' * 20)
+    print()
+
+
 if __name__ == '__main__':
     while True:
         menu()
         operation_name = input("What would you like to do?: ")
-        if operation_name.lower() == 'exit':
+        if operation_name.lower() == 'exit' or operation_name.lower() == 'q':
             print('see you later alligator...')
             break
-        elif operation_name.lower() == 'show':
+        elif operation_name.lower() == 'show' or operation_name.lower() =='w':
             get_items(items)
             print(get_cost(items))
-        elif operation_name.lower() == 'add':
+        elif operation_name.lower() == 'add' or operation_name.lower() == 'a':
             name = input('Item name: ')
             quantity = float(input('Item quantity: '))
             unit = input('Item unit of measure (kg, l, pkg., btl.): ')
             unit_price = float(input('Item price in PLN: '))
             add_item(items, name=name, quantity=quantity, unit=unit, unit_price=unit_price)
             get_items(items)
-        elif operation_name.lower() == 'sell':
+        elif operation_name.lower() == 'sell' or operation_name.lower() == 's':
             name = input('Item name: ')
             quantity = float(input('Item quantity: '))
             sell_item(items, sold_items, name=name, quantity=quantity)
             get_items(items)
             get_items(sold_items)
+        elif operation_name.lower() == 'show_revenue' or operation_name.lower() == 'e':
+            show_revenue(items, sold_items)
+
+
 
