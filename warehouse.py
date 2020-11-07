@@ -106,6 +106,15 @@ def export_item_to_csv(items_list):
             csv_writer.writerow(item)
 
 
+def export_sales_to_csv(sold_items):
+    with open('sales.csv', 'w') as sales_csv:
+        fieldnames = ['name', 'quantity', 'unit', 'unit_price']
+        csv_writer = csv.DictWriter(sales_csv, fieldnames=fieldnames, delimiter='\t')
+        csv_writer.writeheader()
+        for item in sold_items:
+            csv_writer.writerow(item)
+
+
 if __name__ == '__main__':
     while True:
         menu()
@@ -163,3 +172,4 @@ if __name__ == '__main__':
             show_revenue(items, sold_items)
         elif operation_name.lower() == 'save' or operation_name.lower() == 'r':
             export_item_to_csv(items)
+            export_sales_to_csv(sold_items)
