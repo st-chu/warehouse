@@ -1,5 +1,6 @@
 import tabulate
-
+import csv
+import copy
 
 items = [
     {'name': 'coffee', 'quantity': 10.0, 'unit': 'pkg.', 'unit_price': 65.99},
@@ -25,9 +26,9 @@ def get_items(_items):
 
 
 def menu():
-    print('MENU'.center(78, '_'))
-    print('|{:<76}|'.format('->Q/q: exit<-|->W/w: show<-|->A/a: add<-|->S/s: sell<-|->E/e: show_revenue<-'))
-    print(''.center(78, '-'))
+    print('MENU'.center(91, '_'))
+    print('|{:<89}|'.format('->Q/q: exit<-|->W/w: show<-|->A/a: add<-|->S/s: sell<-|->E/e: show_revenue<-|->R/r save<-'))
+    print(''.center(91, '-'))
 
 
 def is_in_list(item_list, name, unit, unit_price):
@@ -96,6 +97,15 @@ def show_revenue(items_list, sold_items_list):
     print()
 
 
+def export_item_to_csv(items_list):
+    with open('magazyn.csv', 'w') as magazyn_csv:
+        fieldnames = ['name', 'quantity', 'unit', 'unit_price']
+        csv_writer = csv.DictWriter(magazyn_csv, fieldnames=fieldnames, delimiter='\t')
+        csv_writer.writeheader()
+        for item in items_list:
+            csv_writer.writerow(item)
+
+
 if __name__ == '__main__':
     while True:
         menu()
@@ -151,3 +161,5 @@ if __name__ == '__main__':
             get_items(sold_items)
         elif operation_name.lower() == 'show_revenue' or operation_name.lower() == 'e':
             show_revenue(items, sold_items)
+        elif operation_name.lower() == 'save' or operation_name.lower() == 'r':
+            export_item_to_csv(items)
