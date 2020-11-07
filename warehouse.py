@@ -55,6 +55,14 @@ def add_to_sold_items(sold_items_list, **product_info):
         sold_items_list.append(product_info)
 
 
+def is_number(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
+
 def sell_item(items_list, sold_items_list, **item_info):
     for item in items_list:
         if item['name'] == item_info['name']:
@@ -76,10 +84,14 @@ def show_revenue(items_list, sold_items_list):
     print('-'*20)
     cost = get_cost(items_list)
     income = get_cost(sold_items_list)
+    revenue = income - cost
+    cost = round(cost, 2)
+    income = round(income, 2)
+    revenue = round(revenue, 2)
     print('Income: {}zł'.format(income))
     print('Costs: {}zł'.format(cost))
     print('-'*20)
-    print('Revenue: {}zł'.format(income-cost))
+    print('Revenue: {}zł'.format(revenue))
     print('-' * 20)
     print()
 
@@ -96,19 +108,46 @@ if __name__ == '__main__':
             print(get_cost(items))
         elif operation_name.lower() == 'add' or operation_name.lower() == 'a':
             name = input('Item name: ')
-            quantity = float(input('Item quantity: '))
+            while True:
+                quantity = input('Item quantity: ')
+                quantity = quantity.replace(',', '.')
+                if is_number(quantity) is True:
+                    quantity = float(quantity)
+                    quantity = round(quantity, 2)
+                    break
+                else:
+                    print('-' * 51)
+                    print('the value entered is not a number, please try again')
+                    print('-' * 51)
             unit = input('Item unit of measure (kg, l, pkg., btl.): ')
-            unit_price = float(input('Item price in PLN: '))
+            while True:
+                unit_price = input('Item price in PLN: ')
+                unit_price = unit_price.replace(',', '.')
+                if is_number(unit_price) is True:
+                    unit_price = float(unit_price)
+                    unit_price = round(unit_price, 2)
+                    break
+                else:
+                    print('-' * 51)
+                    print('the value entered is not a number, please try again')
+                    print('-' * 51)
             add_item(items, name=name, quantity=quantity, unit=unit, unit_price=unit_price)
             get_items(items)
         elif operation_name.lower() == 'sell' or operation_name.lower() == 's':
             name = input('Item name: ')
-            quantity = float(input('Item quantity: '))
+            while True:
+                quantity = input('Item quantity: ')
+                quantity = quantity.replace(',', '.')
+                if is_number(quantity) is True:
+                    quantity = float(quantity)
+                    quantity = round(quantity, 2)
+                    break
+                else:
+                    print('-' * 51)
+                    print('the value entered is not a number, please try again')
+                    print('-' * 51)
             sell_item(items, sold_items, name=name, quantity=quantity)
             get_items(items)
             get_items(sold_items)
         elif operation_name.lower() == 'show_revenue' or operation_name.lower() == 'e':
             show_revenue(items, sold_items)
-
-
-
