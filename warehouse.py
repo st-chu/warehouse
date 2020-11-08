@@ -106,16 +106,34 @@ def export_item_to_csv(items_list):
             csv_writer.writerow(item)
 
 
-def export_sales_to_csv(sold_items):
+def export_sales_to_csv(sold_items_list):
     with open('sales.csv', 'w') as sales_csv:
         fieldnames = ['name', 'quantity', 'unit', 'unit_price']
         csv_writer = csv.DictWriter(sales_csv, fieldnames=fieldnames, delimiter='\t')
         csv_writer.writeheader()
-        for item in sold_items:
+        for item in sold_items_list:
             csv_writer.writerow(item)
 
 
+def change_quantity_and_unit_price_from_str_to_float(items_list):
+    for item in items_list:
+        for key, value in item.items():
+            if key == 'quantity' or key == 'unit_price':
+                item[key] = float(value)
+
+
+def import_items_from_csv(items_list):
+    with open('magazyn.csv', 'r') as magazyn_csv:
+        csv_reader = csv.DictReader(magazyn_csv, delimiter='\t')
+        items_list.clear()
+        for line in csv_reader:
+            items_list.append(line)
+        change_quantity_and_unit_price_from_str_to_float(items_list)
+
+
 if __name__ == '__main__':
+    import_items_from_csv(items)
+    print(items)
     while True:
         menu()
         operation_name = input("What would you like to do?: ")
@@ -173,3 +191,5 @@ if __name__ == '__main__':
         elif operation_name.lower() == 'save' or operation_name.lower() == 'r':
             export_item_to_csv(items)
             export_sales_to_csv(sold_items)
+        elif operation_name.lower() == 'load' or operation_name.lower() == 'l':
+            import_items_from_csv(items)
