@@ -15,6 +15,7 @@ def sort_key(element):
 
 
 def sorted_items_list(items_list):
+    """Sorts alphabetically the names of the products in the list"""
     return sorted(items_list, key=sort_key)
 
 
